@@ -140,7 +140,7 @@ public:
         case DIR::DOWN:
         {
             auto curr_pos = m_SnakeBody.front();
-            curr_pos.setRow((curr_pos.getRow() + 1 + m_dimension.getCol()) % m_dimension.getRow());
+            curr_pos.setRow((curr_pos.getRow() + 1 + m_dimension.getRow()) % m_dimension.getRow());
             if(check_food_update_snake(curr_pos) == -1)
                 return -1;
             break;
