@@ -37,6 +37,11 @@ public:
   }
 };
 
+/*
+Following 4 tasks to do:
+1. take apt data structure to maintain snake body
+4. implement move()
+*/
 
 class SnakeGame {
 public:
@@ -82,89 +87,69 @@ public:
     populateFood();
   }
   
+  int check_food_update_snake(Coordinate curr_pos)
+  {
+
+    if( isCollidingWithSnake(curr_pos) ) {
+          cout << "GAME IS OVER !!! your score is " << m_SnakeBody.size() << endl;
+          return -1;
+        }
+    if(m_foodPos == curr_pos)
+    {
+        m_SnakeBody.push_front(curr_pos);
+        populateFood();
+    }
+    else
+    {
+        Coordinate prev = m_SnakeBody.front();
+        for(int i=1; i<m_SnakeBody.size(); i++)
+        {
+            m_SnakeBody[i] = prev;
+            prev = m_SnakeBody[i];
+        }
+        m_SnakeBody[0] = curr_pos;
+    }
+    return 0;
+  }
+            
   int move(DIR dir) 
   { // snake can't move 180 degree 
       cout << "Next move direction: " << getDirStr(dir) <<endl;
       // campute next move
       m_currDir = dir;
-        auto curr_pos = m_SnakeBody.front();
     
         switch( dir ) {
-    
+
         case DIR::FORWARD:
+        {
+            auto curr_pos = m_SnakeBody.front();
             curr_pos.setCol((curr_pos.getCol() + 1 + m_dimension.getCol()) % m_dimension.getCol());
-                 if( isCollidingWithSnake(curr_pos) ) {
-          cout << "GAME IS OVER !!! your score is " << m_SnakeBody.size() << endl;
-          return -1;
-        }
-            if(m_foodPos == curr_pos)
-            {
-                m_SnakeBody.push_front(curr_pos);
-                populateFood();
-            }
-            else
-            {
-                Coordinate prev = m_SnakeBody.front();
-                for(int i=1; i<m_SnakeBody.size(); i++)
-                {
-                    m_SnakeBody[i] = prev;
-                    prev = m_SnakeBody[i];
-                }
-                m_SnakeBody[0].setCol(curr_pos.getCol());
-            }
+            if(check_food_update_snake(curr_pos) == -1)
+                return -1;
             break;
+        }
             
         case DIR::BACKWARD:
             cout<<"Position is not allowed"<<endl;
             break;
     
         case DIR::UP:
+        {
+            auto curr_pos = m_SnakeBody.front();
             curr_pos.setRow((curr_pos.getRow() - 1 +  m_dimension.getRow()) % m_dimension.getRow());
-                 if( isCollidingWithSnake(curr_pos) ) {
-          cout << "GAME IS OVER !!! your score is " << m_SnakeBody.size() << endl;
-          return -1;
-        }
-            if(m_foodPos == curr_pos)
-            {
-                m_SnakeBody.push_front(curr_pos);
-                populateFood();
-            }
-            else
-            {
-                Coordinate prev = m_SnakeBody.front();
-                for(int i=1; i<m_SnakeBody.size(); i++)
-                {
-                    m_SnakeBody[i] = prev;
-                    prev = m_SnakeBody[i];
-                }
-                m_SnakeBody[0].setRow(curr_pos.getRow());
-            }
+            if(check_food_update_snake(curr_pos) == -1)
+                return -1;
             break;
-    
+        }
         case DIR::DOWN:
+        {
+            auto curr_pos = m_SnakeBody.front();
             curr_pos.setRow((curr_pos.getRow() + 1 + m_dimension.getCol()) % m_dimension.getRow());
-                 if( isCollidingWithSnake(curr_pos) ) {
-          cout << "GAME IS OVER !!! your score is " << m_SnakeBody.size() << endl;
-          return -1;
-        }
-            if(m_foodPos == curr_pos)
-            {
-                m_SnakeBody.push_front(curr_pos);
-                populateFood();
-            }
-            else
-            {
-                Coordinate prev = m_SnakeBody.front();
-                for(int i=1; i<m_SnakeBody.size(); i++)
-                {
-                    m_SnakeBody[i] = prev;
-                    prev = m_SnakeBody[i];
-                }
-                m_SnakeBody[0].setRow(curr_pos.getRow());
-            }
+            if(check_food_update_snake(curr_pos) == -1)
+                return -1;
             break;
-    
-    
+        }
+
         }
         
        cout << "next move coordinate is: ";
