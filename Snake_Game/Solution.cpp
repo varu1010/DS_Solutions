@@ -94,20 +94,16 @@ public:
           cout << "GAME IS OVER !!! your score is " << m_SnakeBody.size() << endl;
           return -1;
         }
+        
+    m_SnakeBody.push_front(curr_pos);
+
     if(m_foodPos == curr_pos)
     {
-        m_SnakeBody.push_front(curr_pos);
         populateFood();
     }
     else
     {
-        Coordinate prev = m_SnakeBody.front();
-        for(int i=1; i<m_SnakeBody.size(); i++)
-        {
-            m_SnakeBody[i] = prev;
-            prev = m_SnakeBody[i];
-        }
-        m_SnakeBody[0] = curr_pos;
+       m_SnakeBody.pop_back();
     }
     return 0;
   }
@@ -204,8 +200,10 @@ int main()
     SnakeGame::DIR::UP,
     SnakeGame::DIR::FORWARD,
     SnakeGame::DIR::BACKWARD,
-    SnakeGame::DIR::DOWN,
-    SnakeGame::DIR::DOWN };
+    SnakeGame::DIR::UP,
+    SnakeGame::DIR::UP,
+    SnakeGame::DIR::FORWARD,
+    };
     
     for( auto itr : moves ) {
     game.print();
