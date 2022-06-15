@@ -158,12 +158,20 @@ public:
       return 0; // returning nonero means either game is over or no place is vacant to allocate for food
   }
   
-  list<Coordinate> foods = { {3,2}, {2,3}, {1,1} };
   int populateFood() { // should randomly generate food coordinate by making sure that it is not colliding with snake
         // this function should basically set m_foodPos to vacant cell. If cell is available return 0 else non-zero value
-        
-    m_foodPos = foods.front();
-    foods.pop_front();
+    
+    while(1)
+    {
+        Coordinate r;
+        r.setRow(rand()% m_dimension.getRow());
+        r.setCol(rand()% m_dimension.getCol());
+        if(!isCollidingWithSnake(r))
+        {
+            m_foodPos = r;
+            break;
+        }
+    }
     return 0;
   }
   
